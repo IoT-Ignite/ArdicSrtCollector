@@ -1,3 +1,7 @@
+# Created by https://www.toptal.com/developers/gitignore/api/python
+# Edit at https://www.toptal.com/developers/gitignore?templates=python
+
+### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -12,6 +16,9 @@ build/
 develop-eggs/
 dist/
 downloads/
+downloads_convert/
+test/read_test_srt_file/
+test/test_downloads_cropped/
 eggs/
 .eggs/
 lib/
