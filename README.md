@@ -1,10 +1,11 @@
 # ArdicSrtCollector
 
+[![Build Status](https://www.travis-ci.com/IoT-Ignite/ArdicSrtCollector.svg?branch=main)](https://travis-ci.com/github/IoT-Ignite/ArdicSrtCollector)
 [![MIT license](http://img.shields.io/badge/license-Apache-brightgreen.svg?style=flat)](https://opensource.org/licenses/Apache-2.0) 
 [![Python](https://img.shields.io/pypi/pyversions/ardicsrtcollector.svg?style=plastic)](https://badge.fury.io/py/ardicsrtcollector)
 [![PyPI](https://badge.fury.io/py/ardicsrtcollector.svg)](https://badge.fury.io/py/ardicsrtcollector)
 
-ArdicSrtCollector has been developed to generate the Turkish speech recognition dataset. As parameters, it takes a txt file consisting of the links of these Youtube videos and a folder name to store the files to be created. For each youtube video URL, it downloads the audio file,  extracts subtitles as the [SRT format](https://en.wikipedia.org/wiki/SubRip), and saves as two new files to the disk. Then it cropped (using [FFMPEG](https://www.ffmpeg.org)) the audio file according to the start and end time of each subtitle and creates a new audio file, and at the same time saves the current subtitle as a new txt file. 
+ArdicSrtCollector has been developed to generate the Turkish speech recognition dataset. As parameters, it takes a txt file consisting of the links of these Youtube videos, and a folder name to store the files to be created. For each youtube video URL, it downloads the audio file,  extracts subtitles as the [SRT format](https://en.wikipedia.org/wiki/SubRip), and saves as two new files to the disk. Then it cropped (using [FFMPEG](https://www.ffmpeg.org)) the audio file according to the start and end time of each subtitle and creates a new audio file, and at the same time saves the current subtitle as a new txt file. 
 
 
 ### Installation
