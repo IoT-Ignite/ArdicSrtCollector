@@ -60,6 +60,7 @@ class YoutubeSrtMp3:
                     if is_url_valid(youtube_url):
                         # self.__check_url_is_available(youtube_url)
                         print("The URL is okay.")
+
                         res=self.get_mp3_srt(line)
                     else:
                         print('!# %s is not valid url' % youtube_url)
