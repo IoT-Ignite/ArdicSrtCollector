@@ -42,7 +42,6 @@ def main():
             print("URL saved into the videos.txt by default")
         else:   
             print(args.url_file_path +" this URL already exist in the given folder path")
-        print('naber0')
         YoutubeSrtMp3(urls_file_path = "videos.txt").convert()
     else:
         if args.save_path is None:

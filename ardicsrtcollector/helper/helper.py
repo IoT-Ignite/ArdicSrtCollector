@@ -2,6 +2,7 @@
 Helper functions
 """
 from hashlib import new
+import sys 
 import os
 from stat import S_IREAD, S_IRGRP, S_IROTH, S_IRWXO,S_IRWXU
 
@@ -77,16 +78,21 @@ def check_double_URL(url_file_path, youtube_url):
     Write youtube urls with given argument into the default videos.txt file
     Read-only mode is set in the end of this function so users do not change directly 
     """
-    if not os.path.exists(url_file_path):
-        with open(url_file_path, "w") as file:
-            file.write(youtube_url + "\n")
-    else:
-        os.chmod(url_file_path, S_IRWXO|S_IRGRP|S_IROTH) #read-write-execute
-        with open(url_file_path, "w") as file:
-            file.write(youtube_url + "\n")
+    try:
+        if not os.path.exists(url_file_path):
+            with open(url_file_path, "w") as file:
+                file.write(youtube_url + "\n")
+        else:
+            os.chmod(url_file_path, S_IRWXU|S_IRGRP|S_IROTH) #read-write-execute
+            with open(url_file_path, "w") as file:
+                file.write(youtube_url + "\n")
 
-    file.close()
-    os.chmod(url_file_path, S_IREAD|S_IRGRP|S_IROTH) #read-only
+        file.close()
+        os.chmod(url_file_path, S_IREAD|S_IRGRP|S_IROTH) #read-only
+    except:
+        print("!!! Permission Error !!!")
+        sys.exit(0)
+    
     return True
     
 

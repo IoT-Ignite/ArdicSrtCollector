@@ -3,6 +3,7 @@ This is a file which performs conversions
 """
 import os
 import datetime
+import sys
 from youtube_transcript_api import YouTubeTranscriptApi
 import youtube_dl
 from .crop_mp3_srt.crop_mp3_srt import CropMp3Srt
@@ -40,7 +41,12 @@ class YoutubeSrtMp3:
         if self._url_file_path is None:
             print("Please give a url file path.")
         else:
-            _filesize = os.path.getsize(self._url_file_path)
+            try:
+                _filesize = os.path.getsize(self._url_file_path)
+            except:
+                print("!!! Invalid file path !!!")
+                sys.exit(0)
+            
             if _filesize == 0:
                 print("The %s is empty." % self._url_file_path)
             else:
@@ -66,6 +72,7 @@ class YoutubeSrtMp3:
                         print('!# %s is not valid url' % youtube_url)
                 if res is True:
                     print("\033[0;32;49mDownloading and cropping are DONE!\033[0m")
+
 
     def __set_file_details(self, video_url):
         """
@@ -102,6 +109,25 @@ class YoutubeSrtMp3:
         # Get the length of the all subtitles
         _len_of_all_srt = len(srt)
 
+        try:
+            get_transcripts = YouTubeTranscriptApi.list_transcripts(self._video_id)
+            transcript = get_transcripts.find_manually_created_transcript(['tr', 'en'])
+            print(transcript)
+        except:
+            print('\n\033[2;31;43m !!!! WARNING !!!! \033[0;0m')
+
+
+        x = ""                             ## BURASI ##
+        while not x == "q":
+            print('\n\033[2;31;43mThis transcript is not manually created. Press "q" to continue cropping, "e" to exit. \033[0;0m \n')
+            x = input()
+            if x == "q":
+                print("\033[2;37;42mContinue to cropping auto-generated subtitle \033[0;0m\nvideo ID = %s " % self._video_id)
+            elif x == "e":
+                print("Exiting the program...")
+                sys.exit(-1)
+            else:
+                print("\033[2;31;43m !!! Invalid Entrance !!! \033[0;0m\n")
         # Create a path of the srt file to save it
         path = self._save_dir + '/' + self._video_id
         print("PATH {}".format(path))
@@ -115,6 +141,7 @@ class YoutubeSrtMp3:
         with open(filepath, 'w+') as new_srt_file_write:
             add_sec = 0
             # from 0 to 373 if the len of the subtitle is 375
+
             for cur_idx in range(0, _len_of_all_srt):
                 progress(percent=cur_idx, delim=_len_of_all_srt, )
                 # print(srt[cur_idx])
@@ -128,8 +155,6 @@ class YoutubeSrtMp3:
                 # END POINT
                 # the end point of the current subtitle will be
                 # the start time of the second subtitle
-                # BUT the last subtitle will be the sum of duration
-                # time and start time, it showed in the 'else' condition
                 _dur_time_str = ""
                 _line_after_subs = ""
                 if cur_idx != _len_of_all_srt - 1:  # index if smaller than 374
@@ -139,22 +164,9 @@ class YoutubeSrtMp3:
                     # get the current time duration
                     cur_sub_dur = srt[cur_idx].get("duration") + s_time
                     the_next_sub_start_time_of = srt[cur_idx + 1].get("start")
-                    diff_time = the_next_sub_start_time_of - cur_sub_dur
+                    # diff_time = the_next_sub_start_time_of - cur_sub_dur
                     add_sec = 0
-                    if diff_time < 0:
-                        if diff_time > -0.510:
-                            add_sec = diff_time
-                        else:
-                            add_sec = -0.510
-                        dur_time += add_sec
-                    elif diff_time > 0:
-                        if diff_time < 0.510:
-                            add_sec = diff_time
-                        else:
-                            add_sec = 0.490
-                        dur_time += add_sec
-
-                    _dur_time_str = str(self.milliseconds_to_time(dur_time))
+                    _dur_time_str = str(self.milliseconds_to_time(the_next_sub_start_time_of))
                     _line_after_subs = "\n\n"
                 else:
                     dur_time = srt[cur_idx].get("duration")
@@ -165,11 +177,12 @@ class YoutubeSrtMp3:
                                          start_time_str + " --> " +
                                          _dur_time_str + "\n"
                                          + current_subtitle + _line_after_subs)
+
                 save_each_subtitle.onetime_save_cropped_mp3_srt(self._video_id,
                                                                 cur_idx + 1,
                                                                 current_subtitle,
                                                                 start_time_str,
-                                                                _dur_time_str)
+                                                                _dur_time_str)     
             new_srt_file_write.close()
             print("\n")
             return
@@ -177,9 +190,13 @@ class YoutubeSrtMp3:
     def __url_to_mp3(self, youtube_url):
         self._ydl_opts = self.__set_video_download_options(is_info=False)
         self.path = self._save_dir + self._video_id
-        with youtube_dl.YoutubeDL(self._ydl_opts) as ydl:
-            # download video and convert to mp3
-            ydl.download([youtube_url])
+        directories = os.listdir(self._save_dir)                       ## BURASI ##
+        if self._video_id in directories:     # Prevent a video from downloading more than once
+            print("This directory already exist")   
+        else:
+            with youtube_dl.YoutubeDL(self._ydl_opts) as ydl:
+                # download video and convert to mp3
+                ydl.download([youtube_url])
             # extract video information's
 
     def __set_video_download_options(self, is_info):
@@ -224,5 +241,10 @@ class YoutubeSrtMp3:
         # print("Curr:{},{},{},{}".format(start_hh,
         # start_mm, start_ss, current))
         start_time = datetime.time(start_hh, start_mm, start_ss)
-        result_time = "{},{}".format(start_time, int(milli_sec))
+        if milli_sec >= 100:
+            result_time = "{},{}".format(start_time, int(milli_sec))
+        elif milli_sec < 100 and milli_sec >=10:
+            result_time = "{},{}{}".format(start_time, "0",int(milli_sec))
+        else:
+            result_time = "{},{}{}".format(start_time, "00",int(milli_sec))
         return result_time
