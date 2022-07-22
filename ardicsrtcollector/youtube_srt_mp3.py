@@ -117,7 +117,7 @@ class YoutubeSrtMp3:
             print('\n\033[2;31;43m !!!! WARNING !!!! \033[0;0m')
 
 
-        x = ""                             ## BURASI ##
+        x = ""                      
         while not x == "q":
             print('\n\033[2;31;43mThis transcript is not manually created. Press "q" to continue cropping, "e" to exit. \033[0;0m \n')
             x = input()
