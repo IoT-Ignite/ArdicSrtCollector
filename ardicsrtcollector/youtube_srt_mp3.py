@@ -126,6 +126,8 @@ class YoutubeSrtMp3:
                     sys.exit(-1)
                 else:
                     print("\033[2;31;43m !!! Invalid Entrance !!! \033[0;0m\n")
+
+                    ##BURASI DEGISTIRILDI 
         # Create a path of the srt file to save it
         path = self._save_dir + '/' + self._video_id
         print("PATH {}".format(path))
