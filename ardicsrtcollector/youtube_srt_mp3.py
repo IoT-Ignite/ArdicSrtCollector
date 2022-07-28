@@ -115,19 +115,17 @@ class YoutubeSrtMp3:
             print(transcript)
         except:
             print('\n\033[2;31;43m !!!! WARNING !!!! \033[0;0m')
-
-
-        x = ""                      
-        while not x == "q":
-            print('\n\033[2;31;43mThis transcript is not manually created. Press "q" to continue cropping, "e" to exit. \033[0;0m \n')
-            x = input()
-            if x == "q":
-                print("\033[2;37;42mContinue to cropping auto-generated subtitle \033[0;0m\nvideo ID = %s " % self._video_id)
-            elif x == "e":
-                print("Exiting the program...")
-                sys.exit(-1)
-            else:
-                print("\033[2;31;43m !!! Invalid Entrance !!! \033[0;0m\n")
+            x = ""                      
+            while not x == "q":
+                print('\n\033[2;31;43mThis transcript is not manually created. Press "q" to continue cropping, "e" to exit. \033[0;0m \n')
+                x = input()
+                if x == "q":
+                    print("\033[2;37;42mContinue to cropping auto-generated subtitle \033[0;0m\nvideo ID = %s " % self._video_id)
+                elif x == "e":
+                    print("Exiting the program...")
+                    sys.exit(-1)
+                else:
+                    print("\033[2;31;43m !!! Invalid Entrance !!! \033[0;0m\n")
         # Create a path of the srt file to save it
         path = self._save_dir + '/' + self._video_id
         print("PATH {}".format(path))
