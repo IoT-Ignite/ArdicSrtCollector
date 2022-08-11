@@ -8,7 +8,7 @@ import argparse
 from ardicsrtcollector.youtube_srt_mp3 import YoutubeSrtMp3
 import ardicsrtcollector.helper as package_version
 from ardicsrtcollector.helper.helper import is_url_valid, check_double_URL
-import os 
+import os
 
 # Version of the ardicsrtcollector package
 
@@ -40,17 +40,18 @@ def main():
         print("The URL is okay.")
         if check_double_URL("videos.txt", args.url_file_path):
             print("URL saved into the videos.txt by default")
-        else:   
-            print(args.url_file_path +" this URL already exist in the given folder path")
-        YoutubeSrtMp3(urls_file_path = "videos.txt").convert()
+        else:
+            print(args.url_file_path +
+                  " this URL already exist in the given folder path")
+        YoutubeSrtMp3(urls_file_path="videos.txt").convert()
     else:
         if args.save_path is None:
             print(' # -Path of converted files set to '
-                'default is \'downloads_convert\'')
+                  'default is \'downloads_convert\'')
             YoutubeSrtMp3(urls_file_path=args.url_file_path).convert()
         else:
             YoutubeSrtMp3(urls_file_path=args.url_file_path,
-                        save_dir=args.save_path).convert()
+                          save_dir=args.save_path).convert()
 
 
 if __name__ == '__main__':
