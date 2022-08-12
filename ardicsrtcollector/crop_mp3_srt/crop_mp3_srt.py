@@ -3,7 +3,10 @@ It is a file that crops the mp3 and srt file by the durations
 which is getting from the srt file.
 """
 import os
-from ..helper.helper import run_bash, parse_time
+import sys, os
+from ardicsrtcollector.helper.helper import run_bash, parse_time   
+# from ..helper.helper import run_bash, parse_time   
+
 
 
 class CropMp3Srt:
