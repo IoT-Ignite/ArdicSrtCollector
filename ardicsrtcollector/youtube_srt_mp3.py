@@ -46,7 +46,7 @@ class YoutubeSrtMp3:
             except:
                 print("!!! Invalid file path !!!")
                 sys.exit(0)
-
+            
             if _filesize == 0:
                 print("The %s is empty." % self._url_file_path)
             else:
@@ -61,18 +61,18 @@ class YoutubeSrtMp3:
                     # check youtubeurl is valid or not
                     # if it is valid, convert to mp3, srt file
                     # print info to screen and continue
-                    res = False
-
+                    res=False
+                    
                     if is_url_valid(youtube_url):
                         # self.__check_url_is_available(youtube_url)
                         print("The URL is okay.")
 
-                        res = self.get_mp3_srt(line)
+                        res=self.get_mp3_srt(line)
                     else:
                         print('!# %s is not valid url' % youtube_url)
                 if res is True:
-                    print(
-                        "\033[0;32;49mDownloading and cropping are DONE!\033[0m")
+                    print("\033[0;32;49mDownloading and cropping are DONE!\033[0m")
+
 
     def __set_file_details(self, video_url):
         """
@@ -110,32 +110,24 @@ class YoutubeSrtMp3:
         _len_of_all_srt = len(srt)
 
         try:
-            get_transcripts = YouTubeTranscriptApi.list_transcripts(
-                self._video_id)
-            transcript = get_transcripts.find_manually_created_transcript([
-                                                                          'tr', 'en'])
+            get_transcripts = YouTubeTranscriptApi.list_transcripts(self._video_id)
+            transcript = get_transcripts.find_manually_created_transcript(['tr', 'en'])
             print(transcript)
         except:
             print('\n\033[2;31;43m !!!! WARNING !!!! \033[0;0m')
-            x = ""
+            x = ""                      
             while not x == "q":
-                print(
-                    '\n\033[2;31;43mThis transcript is not manually created. Press "q" to continue cropping, "e" to exit. \033[0;0m \n')
+                print('\n\033[2;31;43mThis transcript is not manually created. Press "q" to continue cropping, "e" to exit. \033[0;0m \n')
                 x = input()
                 if x == "q":
-                    print(
-                        "\033[2;37;42mContinue to cropping auto-generated subtitle \033[0;0m\nvideo ID = %s " % self._video_id)
+                    print("\033[2;37;42mContinue to cropping auto-generated subtitle \033[0;0m\nvideo ID = %s " % self._video_id)
                 elif x == "e":
                     print("Exiting the program...")
                     sys.exit(-1)
                 else:
                     print("\033[2;31;43m !!! Invalid Entrance !!! \033[0;0m\n")
 
-<<<<<<< HEAD
                     ##BURASI DEGISTIRILDI 
-=======
-                    # BURASI DEGISTIRILDI
->>>>>>> ba2243c2b7797f41f062c4cee0f3a15fa48636eb
         # Create a path of the srt file to save it
         path = self._save_dir + '/' + self._video_id
         print("PATH {}".format(path))
@@ -174,8 +166,7 @@ class YoutubeSrtMp3:
                     the_next_sub_start_time_of = srt[cur_idx + 1].get("start")
                     # diff_time = the_next_sub_start_time_of - cur_sub_dur
                     add_sec = 0
-                    _dur_time_str = str(self.milliseconds_to_time(
-                        the_next_sub_start_time_of))
+                    _dur_time_str = str(self.milliseconds_to_time(the_next_sub_start_time_of))
                     _line_after_subs = "\n\n"
                 else:
                     dur_time = srt[cur_idx].get("duration")
@@ -191,7 +182,7 @@ class YoutubeSrtMp3:
                                                                 cur_idx + 1,
                                                                 current_subtitle,
                                                                 start_time_str,
-                                                                _dur_time_str)
+                                                                _dur_time_str)     
             new_srt_file_write.close()
             print("\n")
             return
@@ -199,9 +190,9 @@ class YoutubeSrtMp3:
     def __url_to_mp3(self, youtube_url):
         self._ydl_opts = self.__set_video_download_options(is_info=False)
         self.path = self._save_dir + self._video_id
-        directories = os.listdir(self._save_dir)  # BURASI ##
+        directories = os.listdir(self._save_dir)                       ## BURASI ##
         if self._video_id in directories:     # Prevent a video from downloading more than once
-            print("This directory already exist")
+            print("This directory already exist")   
         else:
             with youtube_dl.YoutubeDL(self._ydl_opts) as ydl:
                 # download video and convert to mp3
@@ -217,7 +208,7 @@ class YoutubeSrtMp3:
                 'preferredquality': '192',
             }],
             'outtmpl': self._save_dir + '/%(id)s.%(ext)s' if is_info is True else self._save_dir +
-            '/%(id)s/%(id)s.%(ext)s',
+                       '/%(id)s/%(id)s.%(ext)s',
 
         }
 
@@ -252,8 +243,8 @@ class YoutubeSrtMp3:
         start_time = datetime.time(start_hh, start_mm, start_ss)
         if milli_sec >= 100:
             result_time = "{},{}".format(start_time, int(milli_sec))
-        elif milli_sec < 100 and milli_sec >= 10:
-            result_time = "{},{}{}".format(start_time, "0", int(milli_sec))
+        elif milli_sec < 100 and milli_sec >=10:
+            result_time = "{},{}{}".format(start_time, "0",int(milli_sec))
         else:
-            result_time = "{},{}{}".format(start_time, "00", int(milli_sec))
+            result_time = "{},{}{}".format(start_time, "00",int(milli_sec))
         return result_time

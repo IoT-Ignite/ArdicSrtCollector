@@ -2,15 +2,15 @@
 Helper functions
 """
 from hashlib import new
-import sys
+import sys 
 import os
-from stat import S_IREAD, S_IRGRP, S_IROTH, S_IRWXO, S_IRWXU
-from xmlrpc.client import Boolean
+from stat import S_IREAD, S_IRGRP, S_IROTH, S_IRWXO,S_IRWXU
 
 VERSION = "1.0.14"
 
 
 def get_seconds(time_str):
+    
     """Get Seconds from time."""
     hour, minutes, seconds = time_str.split(':')
     return int(hour) * 3600 + int(minutes) * 60 + int(seconds)
@@ -45,7 +45,7 @@ def create_folder(folder_name):
         os.makedirs(folder_name)
 
 
-def is_url_valid(youtube_url) -> bool:
+def is_url_valid(youtube_url):
     """
     Checks a given url is valid or not
     :param youtube_url: is URL
@@ -65,8 +65,7 @@ def progress(percent=0, delim=100, width=30):
     print('\rCropping files: [', '#' * left, ' ' * right, ']',
           f' {percent:.0f} ', sep='', end='', flush=True)
 
-
-def is_file_Empty(filepath) -> bool:
+def is_file_Empty(filepath):
     with open(filepath, "r") as file:
         if os.stat(filepath).st_size == 0:
             return True
@@ -74,7 +73,7 @@ def is_file_Empty(filepath) -> bool:
             return False
 
 
-def check_double_URL(url_file_path, youtube_url) -> bool:
+def check_double_URL(url_file_path, youtube_url):
     """
     Write youtube urls with given argument into the default videos.txt file
     Read-only mode is set in the end of this function so users do not change directly 
@@ -84,15 +83,17 @@ def check_double_URL(url_file_path, youtube_url) -> bool:
             with open(url_file_path, "w") as file:
                 file.write(youtube_url + "\n")
         else:
-            os.chmod(url_file_path, S_IRWXU | S_IRGRP |
-                     S_IROTH)  # read-write-execute
+            os.chmod(url_file_path, S_IRWXU|S_IRGRP|S_IROTH) #read-write-execute
             with open(url_file_path, "w") as file:
                 file.write(youtube_url + "\n")
 
         file.close()
-        os.chmod(url_file_path, S_IREAD | S_IRGRP | S_IROTH)  # read-only
+        os.chmod(url_file_path, S_IREAD|S_IRGRP|S_IROTH) #read-only
     except:
         print("!!! Permission Error !!!")
         sys.exit(0)
-
+    
     return True
+    
+
+

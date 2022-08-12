@@ -3,9 +3,10 @@ It is a file that crops the mp3 and srt file by the durations
 which is getting from the srt file.
 """
 import os
-import sys
-from ardicsrtcollector.helper.helper import run_bash, parse_time
-# from ..helper.helper import run_bash, parse_time
+import sys, os
+from ardicsrtcollector.helper.helper import run_bash, parse_time   
+# from ..helper.helper import run_bash, parse_time   
+
 
 
 class CropMp3Srt:
@@ -75,7 +76,7 @@ class CropMp3Srt:
 
     def _save_sub_txt(self, video_id, sub_id, current_subtitle):
         _new_srt_name = self._path + "/" + video_id\
-            + "_crop_" + sub_id + ".txt"
+                        + "_crop_" + sub_id + ".txt"
         with open(_new_srt_name, 'w+') as new_cropped_file:
             new_cropped_file.write(current_subtitle)
         new_cropped_file.close()
