@@ -7,8 +7,8 @@ from crop_mp3_srt import CropMp3Srt
 import os
 from ardicsrtcollector.helper.helper import is_url_valid
 
+
 def main():
-    
     """
     Usage: python3 main.py -path PATH_OF_MP3_AND_SRTFILE
                 -start "00:00:02" -end "00:02:00"
